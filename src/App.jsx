@@ -1,0 +1,236 @@
+//this is the main page code it takes its styles from app.css
+import { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes, // updated to Routes from Switch
+  Navigate, // updated from Redirect
+} from "react-router-dom"; // updated import from react-router-dom v6
+import "./App.css";
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import {
+  MainContainer,
+  ChatContainer,
+  MessageList,
+  Message,
+  MessageInput,
+  TypingIndicator,
+  ConversationHeader,
+  Avatar,
+} from "@chatscope/chat-ui-kit-react";
+import AuthPage from "./AuthPage"; // Import the AuthPage component
+
+const GROQ_API_KEY = "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";
+
+const systemMessage = {
+  role: "system",
+  content: `You are a friendly and engaging conversational AI. Your primary task is to have natural, ongoing conversations with the user. During the conversation, if ONLY the user makes a **clear and objective mistake about:
+   1. Subject-verb agreement errors (e.g., "she don't" → "she doesn't").
+   2. Incorrect verb tense (e.g., "I goes" → "I go").**
+You will gently follow these rules STRICTLY without interrupting the flow of the conversation:
+
+1. **Primary Goal:**
+   - Engage in friendly, natural conversations with the user.
+   - Maintain a warm and helpful tone.
+
+2. **Corrections:**
+   - ONLY correct:
+     - Subject-verb agreement errors (e.g., "she don't" → "she doesn't").
+     - Incorrect verb tense (e.g., "I goes" → "I go").
+   - DO NOT correct:
+     - Capitalization (e.g., leave "i" as "i").
+     - Punctuation (e.g., leave missing commas or periods as they are).
+     - Stylistic choices (e.g., word order, phrasing, or informal language).
+     - Minor typos or spelling errors.
+     - Anything else.
+
+3. **Correction Format:**
+   - Do not label the correction or explain why it was made. Simply provide the corrected version of the sentence after your response.
+   - In a new line: ✔️ before the correct sentence and ❌ before the mistake.
+   - Continue the conversation naturally after the correction.
+   - If there was no correction, DO NOT MENTION IT.
+
+4. **Multilingual Support:**
+   - Apply this behavior in all languages the user speaks, adapting to whichever language they use in the conversation.
+   - Correct mistakes according to the rules above, regardless of the language.
+
+5. **Tone:**
+   - Be friendly, warm, and engaging.
+   - Avoid sounding robotic or overly formal.
+
+**Examples:**
+
+- User: "trees is tall"
+- AI: "Oh, that’s a nice thought!  
+  ❌trees is tall  
+  ✔️trees are tall  
+  So, what kind of trees do you like?"  
+
+- User: "i am fine, and you?"
+- AI: "Oh, I am glad! I am fine too, thanks.  
+  So, do you have any plans today?"  
+
+- User: "Les arbres est grands."
+- AI: "C'est vrai qu'ils peuvent être impressionnants!  
+  ❌Les arbres est grands.  
+  ✔️Les arbres sont grands.  
+  Quels types d'arbres préférez-vous?"  
+
+- User: "Yo va a la tienda."
+- AI: "¡Qué interesante!  
+  ❌Yo va a la tienda.  
+  ✔️Yo voy a la tienda.  
+  ¿Qué planeas comprar?"  
+
+- User: "Ellos está felices."
+- AI: "¡Eso es genial!  
+  ❌Ellos está felices.  
+  ✔️Ellos están felices.  
+  ¿Qué los hace tan felices?"  
+`,
+};
+
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      message: "Hello, let's practice!",
+      sentTime: "just now",
+      sender: "Groq Assistant",
+      direction: "incoming",
+    },
+  ]);
+  const [isTyping, setIsTyping] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const ClickHandler = () => {
+    const newWindow = window.open("", "_blank");
+    newWindow.document.write("<html><body><h1>Welcome Here</h1></body></html>");
+    newWindow.document.close();
+  };
+
+  const handleSend = async (message) => {
+    const newMessage = {
+      message,
+      direction: "outgoing",
+      sender: "user",
+    };
+
+    setMessages((prev) => [...prev, newMessage]);
+    setIsTyping(true);
+
+    await processMessageToGroq([...messages, newMessage]);
+  };
+
+  async function processMessageToGroq(chatMessages) {
+    const apiMessages = chatMessages.map((messageObject) => ({
+      role: messageObject.sender === "Groq Assistant" ? "assistant" : "user",
+      content: messageObject.message,
+    }));
+
+    const apiRequestBody = {
+      model: "llama-3.3-70b-versatile",
+      messages: [systemMessage, ...apiMessages],
+    };
+
+    try {
+      const response = await fetch(
+        "https://api.groq.com/openai/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${GROQ_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(apiRequestBody),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          message: data.choices[0].message.content,
+          sender: "Groq Assistant",
+          direction: "incoming",
+        },
+      ]);
+    } catch (error) {
+      console.error("Error communicating with the Groq API:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          message: "Sorry, there was an issue connecting to the server.",
+          sender: "Groq Assistant",
+          direction: "incoming",
+        },
+      ]);
+    } finally {
+      setIsTyping(false);
+    }
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <Router>
+        <Routes>
+          {" "}
+          {/* replaced Switch with Routes */}
+          <Route path="/" element={<AuthPage onLogin={handleLogin} />} />
+        </Routes>{" "}
+        {/* replaced Switch with Routes */}
+      </Router>
+    );
+  }
+
+  return (
+    <div className="App">
+      <div style={{ position: "relative", height: "800px", width: "700px" }}>
+        <MainContainer>
+          <ChatContainer>
+            <ConversationHeader style={{ position: "relative" }}>
+              <Avatar name="LingoMate" src="logoThree.png" />
+              <ConversationHeader.Content userName="" />
+
+              <ConversationHeader.Actions style={{ marginLeft: "auto" }}>
+                <button onClick={ClickHandler} className="end-chat-btn">
+                  End Chat
+                </button>
+              </ConversationHeader.Actions>
+            </ConversationHeader>
+            <MessageList
+              scrollBehavior="smooth"
+              typingIndicator={
+                isTyping ? (
+                  <TypingIndicator content="Groq Assistant is typing..." />
+                ) : null
+              }
+            >
+              {messages.map((message, i) => (
+                <Message key={i} model={message} />
+              ))}
+            </MessageList>
+            <MessageInput
+              placeholder="Type message here"
+              onSend={handleSend}
+              sendButton={true}
+              sendButtonDisplayMode="always"
+              attachButton={true}
+              attachButtonContent={<button>Button 2</button>}
+            />
+          </ChatContainer>
+        </MainContainer>
+      </div>
+    </div>
+  );
+}
+
+export default App;

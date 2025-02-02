@@ -1,0 +1,36 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0rem;
+  text-align: center;
+}
+/*#425583;*/
+/*#cadeee; #dee8f0*/
+body {
+  background-color: #cadeee;
+  /*  margin: 0; /* Ensure the background covers the whole page */
+  /* height: 100vh; /* Ensure it spans the full viewport height */
+  /*  width: 100vw; /* Ensure it spans the full viewport width */
+}
+/*button syle*/
+.end-chat-btn {
+  padding: 4px 9px;
+  font-size: 14px;
+  background: linear-gradient(to right, #cadeee, #4a7ca5);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.end-chat-btn:hover {
+  background: linear-gradient(to right, #88a2b8, #2f5574);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.end-chat-btn:focus {
+  outline: none;
+}
