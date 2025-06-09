@@ -13,9 +13,10 @@ import {
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "./chatPage.css";
 
-//const API_BASE_URL = "/api"; // Proxy will handle the base URL
-const API_BASE_URL = "https://englishlearningco.onrender.com/api";
-
+// changes related to proxy
+//const API_BASE_URL = "https://englishlearningco.onrender.com/api";
+//this was using proxy :
+const API_BASE_URL = "/api/proxy-chat"; // Proxy will handle the base URL
 
 const ChatPage = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const ChatPage = () => {
 
   async function fetchChatHistory(authToken) {
     try {
-      const response = await fetch(`${API_BASE_URL}/chat/history`, {
+      const response = await fetch(`${API_BASE_URL}`, {
         method: "GET",
         headers: {
           Authorization: `Token ${authToken}`,
@@ -170,6 +171,7 @@ const ChatPage = () => {
 };
 
 export default ChatPage;
+
 
 /*import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
