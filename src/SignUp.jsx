@@ -18,7 +18,7 @@ const SignUp = ({ onLogin }) => {
     }
 
     try {
-      const response = await fetch("https://englishlearningco.onrender.com/api-auth/register", {
+      const response = await fetch("/api/proxy-register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
