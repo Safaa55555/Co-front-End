@@ -13,8 +13,8 @@ const SignIn = ({ onLogin }) => {
     e.preventDefault();
 
     try {
-      /** here i updated the http/orendo.com/api-auth/register   to   this down ,,,i only deltetd the http/orendo.. */
-      const response = await fetch("/api-auth/login", {
+      /** for proxy here i updated the http/orendo.com/api-auth/register   to   this down ,,,i only deltetd the http/orendo.. */
+      const response = await fetch("/api/proxy-register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
