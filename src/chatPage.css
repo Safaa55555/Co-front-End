@@ -1,18 +1,25 @@
-/*alsatur da jayb alkafwa kulaha*/
-/*#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0rem;
-  text-align: center;
-}*/
-
-/*body {
+/*this is the chat page styles */
+.chat-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
   background-color: #cadeee;
-  /*  margin: 0; /* Ensure the background covers the whole page */
-/* height: 100vh; /* Ensure it spans the full viewport height */
-/*  width: 100vw; /* Ensure it spans the full viewport width */
-/*}*/
-/*button syle*/
+}
+
+.chat-container {
+  position: relative;
+  height: 630px;
+  width: 1200px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  /*those 3 liner are important and new*/
+  max-width: 3000px;
+  width: 100vw;
+  margin: 0;
+}
+
 .end-chat-btn {
   padding: 4px 9px;
   font-size: 14px;

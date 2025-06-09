@@ -1,0 +1,67 @@
+.signup-container {
+  display: flex;
+  flex-direction: row; /* Split into two halves horizontally */
+  height: 100vh; /* Full viewport height */
+  background-color: #f6f5f3; /* Match background color with SignIn page */
+}
+
+/* Left half of the page for the form */
+.signup-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.signup-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.signup-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.signup-input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.signup-button {
+  padding: 10px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.signup-button:hover {
+  background-color: #1e7e34;
+}
+
+.signup-text {
+  margin-top: 1rem;
+  color: #555;
+}
+
+/* Right half of the page for the image */
+.signup-right {
+  flex: 1;
+  background-image: url("b.png"); /* Replace with your actual image path */
+  background-size: cover;
+  background-position: center;
+  height: 100%; /* Ensure image takes up the full height */
+  width: 100%; /* Ensure image takes up the full width of its container */
+}
