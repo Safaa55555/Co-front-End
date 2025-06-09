@@ -2,7 +2,8 @@ import { useState } from "react";
 import { marked } from "marked"; // ✅ Step 1: Import marked
 import "./Mini.css";
 
-const API_BASE_URL = "/api";
+//const API_BASE_URL = "/api";
+const API_BASE_URL = "https://englishlearningco.onrender.com/api";
 
 function MiniLessons() {
   const [miniLesson, setMiniLesson] = useState(null);
