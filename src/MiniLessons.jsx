@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { marked } from "marked"; // ✅ Step 1: Import marked
 import "./Mini.css";
+//using proxy:
+const API_BASE_URL = "/api";
 
-//const API_BASE_URL = "/api";
-const API_BASE_URL = "https://englishlearningco.onrender.com/api";
+//changed to use full path:
+//const API_BASE_URL = "https://englishlearningco.onrender.com/api";
 
 function MiniLessons() {
   const [miniLesson, setMiniLesson] = useState(null);
@@ -25,7 +27,7 @@ function MiniLessons() {
     try {
       // Step 1: Generate mini lesson
       const generateResponse = await fetch(
-        `${API_BASE_URL}/generate-minilessons`,
+        `${API_BASE_URL}/proxy-minilessons`,
         {
           method: "POST",
           headers: {
@@ -41,16 +43,13 @@ function MiniLessons() {
       }
 
       // Step 2: Fetch mini lesson
-      const fetchResponse = await fetch(
-        `${API_BASE_URL}/generate-minilessons`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Token ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const fetchResponse = await fetch(`${API_BASE_URL}/proxy-minilessons`, {
+        method: "GET",
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!fetchResponse.ok) {
         throw new Error("Failed to fetch mini lesson.");
