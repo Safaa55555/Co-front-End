@@ -1,5 +1,15 @@
-/** proxy chat and registration work perfectly but the minilessons idk */
 import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+export default defineConfig({
+  plugins: [react()],
+  // Remove the proxy completely
+});
+
+
+
+/** proxy chat and registration work perfectly but the minilessons idk */
+/*import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 export default defineConfig({
