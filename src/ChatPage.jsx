@@ -13,10 +13,8 @@ import {
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "./chatPage.css";
 
-// changes related to proxy
-//const API_BASE_URL = "https://englishlearningco.onrender.com/api";
-//this was using proxy :
-const API_BASE_URL = "/api/proxy-chat"; // Proxy will handle the base URL
+// Updated URL handling for both dev and production
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 const ChatPage = () => {
   const navigate = useNavigate();
@@ -42,7 +40,7 @@ const ChatPage = () => {
 
   async function fetchChatHistory(authToken) {
     try {
-      const response = await fetch(`${API_BASE_URL}`, {
+      const response = await fetch(`${API_BASE_URL}/chat/history`, {  // Updated endpoint
         method: "GET",
         headers: {
           Authorization: `Token ${authToken}`,
@@ -85,10 +83,8 @@ const ChatPage = () => {
     if (!token) return;
 
     const apiRequestBody = {
-      messages: userMessage.message, // Changed 'message' to 'messages' to match backend
+      messages: userMessage.message,
     };
-
-    console.log("Sending message to API:", JSON.stringify(apiRequestBody));
 
     try {
       const response = await fetch(`${API_BASE_URL}/chat`, {
@@ -101,15 +97,13 @@ const ChatPage = () => {
       });
 
       const responseText = await response.text();
-      console.log("Raw response from API:", responseText);
-
+      
       if (!response.ok) {
         throw new Error(`API error: ${response.status} - ${responseText}`);
       }
 
       const data = JSON.parse(responseText);
-      console.log("Parsed API response:", data);
-
+      
       setMessages((prev) => [
         ...prev,
         {
@@ -171,7 +165,6 @@ const ChatPage = () => {
 };
 
 export default ChatPage;
-
 
 /*import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
