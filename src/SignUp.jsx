@@ -18,7 +18,8 @@ const SignUp = ({ onLogin }) => {
     }
 
     try {
-      const apiUrl = `${import.meta.env.VITE_API_BASE_URL || '/api'}/proxy-register`;
+      
+      const apiUrl = `${import.meta.env.VITE_API_BASE_URL || '/api'}-auth/register`;
       const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
