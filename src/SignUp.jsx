@@ -18,7 +18,8 @@ const SignUp = ({ onLogin }) => {
     }
 
     try {
-      const response = await fetch("/api/proxy-register", {
+      const apiUrl = `${import.meta.env.VITE_API_BASE_URL || '/api'}/proxy-register`;
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -82,6 +83,9 @@ SignUp.propTypes = {
 };
 
 export default SignUp;
+
+
+
 
 /*import { useState } from "react";
 import { Link } from "react-router-dom";
